@@ -1,0 +1,7 @@
+{
+  "name": "AAVRIT - Private Academic & Campus Network",
+  "description": "Multi-tenant private academic network & digital campus ecosystem for verified students, teachers, and colleges.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

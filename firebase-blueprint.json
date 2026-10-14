@@ -1,0 +1,178 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role and academic credentials",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "fullName": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["student", "teacher", "hod", "college_admin", "platform_admin", "alumni", "guest"] },
+        "collegeId": { "type": "string", "maxLength": 64 },
+        "branchCode": { "type": "string", "maxLength": 32 },
+        "emailVerified": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "email", "fullName", "role", "collegeId"]
+    },
+    "College": {
+      "title": "College",
+      "description": "Educational institution information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 256 },
+        "code": { "type": "string", "maxLength": 32 },
+        "city": { "type": "string", "maxLength": 64 },
+        "state": { "type": "string", "maxLength": 64 },
+        "district": { "type": "string", "maxLength": 64 },
+        "aisheCode": { "type": "string", "maxLength": 32 },
+        "sbteCode": { "type": "string", "maxLength": 32 },
+        "verified": { "type": "boolean" }
+      },
+      "required": ["id", "name", "code"]
+    },
+    "Group": {
+      "title": "Group",
+      "description": "College departmental or cohort group",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "collegeId": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 512 },
+        "type": { "type": "string", "maxLength": 64 },
+        "branchCode": { "type": "string", "maxLength": 32 },
+        "joinPolicy": { "type": "string", "maxLength": 64 },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "memberCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "collegeId", "name", "ownerId"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Feed post or discussion item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "collegeId": { "type": "string", "maxLength": 64 },
+        "groupId": { "type": "string", "maxLength": 128 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 128 },
+        "authorRole": { "type": "string", "maxLength": 64 },
+        "category": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 256 },
+        "body": { "type": "string", "maxLength": 4000 },
+        "likesCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "collegeId", "authorId", "title", "body"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "Campus academic or extracurricular event",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "collegeId": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 256 },
+        "description": { "type": "string", "maxLength": 2048 },
+        "type": { "type": "string", "maxLength": 64 },
+        "startDate": { "type": "string", "maxLength": 64 },
+        "endDate": { "type": "string", "maxLength": 64 },
+        "location": { "type": "string", "maxLength": 256 },
+        "organizer": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "collegeId", "title"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Study material, PYQ, or lecture note",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "collegeId": { "type": "string", "maxLength": 64 },
+        "uploaderId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 256 },
+        "subjectName": { "type": "string", "maxLength": 128 },
+        "branchCode": { "type": "string", "maxLength": 32 },
+        "semester": { "type": "number" },
+        "downloadCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "collegeId", "uploaderId", "title"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Official campus or departmental bulletin circular",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "collegeId": { "type": "string", "maxLength": 64 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 256 },
+        "body": { "type": "string", "maxLength": 4000 },
+        "scopeType": { "type": "string", "maxLength": 64 },
+        "branchCode": { "type": "string", "maxLength": 32 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "collegeId", "title", "body"]
+    },
+    "VerificationRequest": {
+      "title": "VerificationRequest",
+      "description": "Student, faculty, or institutional head identity verification request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userName": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "maxLength": 256 },
+        "collegeId": { "type": "string", "maxLength": 64 },
+        "collegeName": { "type": "string", "maxLength": 256 },
+        "role": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "maxLength": 32 },
+        "docType": { "type": "string", "maxLength": 64 },
+        "submittedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "collegeId", "role", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles indexed by UID"
+    },
+    "/colleges/{collegeId}": {
+      "schema": { "$ref": "#/entities/College" },
+      "description": "Verified institutions directory"
+    },
+    "/groups/{groupId}": {
+      "schema": { "$ref": "#/entities/Group" },
+      "description": "College community and branch cohorts"
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/Post" },
+      "description": "Academic and campus discussion posts"
+    },
+    "/events/{eventId}": {
+      "schema": { "$ref": "#/entities/Event" },
+      "description": "Institution calendar events"
+    },
+    "/notes/{noteId}": {
+      "schema": { "$ref": "#/entities/Note" },
+      "description": "Uploaded study resources and syllabi"
+    },
+    "/announcements/{announcementId}": {
+      "schema": { "$ref": "#/entities/Announcement" },
+      "description": "Campus circulars and bulletins"
+    },
+    "/verification_requests/{requestId}": {
+      "schema": { "$ref": "#/entities/VerificationRequest" },
+      "description": "Institutional verification and approval queue"
+    }
+  }
+}

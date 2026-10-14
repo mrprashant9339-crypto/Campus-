@@ -1,0 +1,164 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened Helper Primitives
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'mrprashant9339@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // Entity Validations
+    function isValidUser(data) {
+      return data.keys().hasAll(['id', 'fullName', 'role', 'collegeId']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.fullName is string && data.fullName.size() <= 128 &&
+        data.role in ['student', 'teacher', 'hod', 'college_admin', 'platform_admin', 'alumni', 'guest', 'librarian', 'lab_assistant', 'accountant', 'warden', 'recruiter', 'parent', 'guest_faculty'] &&
+        data.collegeId is string && data.collegeId.size() <= 64;
+    }
+
+    function isValidCollege(data) {
+      return data.keys().hasAll(['id', 'name', 'code']) &&
+        data.id is string && data.id.size() <= 64 &&
+        data.name is string && data.name.size() <= 256 &&
+        data.code is string && data.code.size() <= 32;
+    }
+
+    function isValidGroup(data) {
+      return data.keys().hasAll(['id', 'collegeId', 'name', 'ownerId']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.collegeId is string && data.collegeId.size() <= 64 &&
+        data.name is string && data.name.size() <= 128 &&
+        data.ownerId is string && data.ownerId.size() <= 128 &&
+        (!('description' in data) || (data.description is string && data.description.size() <= 512)) &&
+        (!('branchCode' in data) || (data.branchCode is string && data.branchCode.size() <= 32));
+    }
+
+    function isValidPost(data) {
+      return data.keys().hasAll(['id', 'collegeId', 'authorId', 'title', 'body']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.collegeId is string && data.collegeId.size() <= 64 &&
+        data.authorId is string && data.authorId.size() <= 128 &&
+        data.title is string && data.title.size() <= 256 &&
+        data.body is string && data.body.size() <= 4000 &&
+        (!('likesCount' in data) || (data.likesCount is number));
+    }
+
+    function isValidEvent(data) {
+      return data.keys().hasAll(['id', 'collegeId', 'title']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.collegeId is string && data.collegeId.size() <= 64 &&
+        data.title is string && data.title.size() <= 256;
+    }
+
+    function isValidNote(data) {
+      return data.keys().hasAll(['id', 'collegeId', 'uploaderId', 'title']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.collegeId is string && data.collegeId.size() <= 64 &&
+        data.uploaderId is string && data.uploaderId.size() <= 128 &&
+        data.title is string && data.title.size() <= 256;
+    }
+
+    // Collections
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(userId) && (request.auth.uid == userId || isAdmin()) && isValidUser(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /colleges/{collegeId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(collegeId) && isValidCollege(incoming());
+      allow delete: if isAdmin() && isValidId(collegeId);
+    }
+
+    match /college_academic_profiles/{collegeId} {
+      allow read: if true;
+      allow create, update: if isValidId(collegeId);
+      allow delete: if isAdmin() && isValidId(collegeId);
+    }
+
+    match /groups/{groupId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(groupId) && incoming().ownerId == request.auth.uid && isValidGroup(incoming());
+      allow update: if isSignedIn() && isValidId(groupId) && isValidGroup(incoming()) && (
+        (existing().ownerId == request.auth.uid && incoming().ownerId == existing().ownerId) ||
+        isAdmin() ||
+        incoming().diff(existing()).affectedKeys().hasOnly(['memberCount'])
+      );
+      allow delete: if isSignedIn() && isValidId(groupId) && (existing().ownerId == request.auth.uid || isAdmin());
+    }
+
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(postId) && incoming().authorId == request.auth.uid && isValidPost(incoming());
+      allow update: if isSignedIn() && isValidId(postId) && isValidPost(incoming()) && (
+        (existing().authorId == request.auth.uid && incoming().authorId == existing().authorId) ||
+        isAdmin() ||
+        incoming().diff(existing()).affectedKeys().hasOnly(['likesCount'])
+      );
+      allow delete: if isSignedIn() && isValidId(postId) && (existing().authorId == request.auth.uid || isAdmin());
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow create, update: if isSignedIn() && isValidId(eventId) && isValidEvent(incoming());
+      allow delete: if isAdmin() && isValidId(eventId);
+    }
+
+    match /notes/{noteId} {
+      allow read: if true;
+      allow create, update: if isSignedIn() && isValidId(noteId) && isValidNote(incoming());
+      allow delete: if isSignedIn() && isValidId(noteId) && (existing().uploaderId == request.auth.uid || isAdmin());
+    }
+
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow create, update: if isSignedIn() && isValidId(announcementId);
+      allow delete: if isAdmin() && isValidId(announcementId);
+    }
+
+    match /verification_requests/{requestId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(requestId);
+      allow update: if isSignedIn() && isValidId(requestId);
+      allow delete: if isAdmin() && isValidId(requestId);
+    }
+
+    match /messages/{messageId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /sync_audit/{auditId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

@@ -1,0 +1,362 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f5f4f0;
+  --ink: #111111;
+  --ink-dim: #666666;
+  --ink-faint: #e0ddd5;
+  --accent: #000000;
+  --warning: #cc0000;
+  --warning-bg: rgba(204, 0, 0, 0.05);
+  --panel-bg: #FFFFFF;
+  --font-display: 'Oswald', sans-serif;
+  --font-body: 'Geist', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: #000000;
+    color: #ffffff;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-serif {
+  font-family: var(--font-display);
+}
+
+.font-sans {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Variation 12 Brand */
+.brand-block {
+  padding: 24px 28px;
+  border-bottom: 1.5px solid var(--ink);
+  background: #ffffff;
+}
+
+.brand-text {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 0.9;
+}
+
+/* Technical Metadata & Labels */
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-dim);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-dim);
+  display: block;
+}
+
+.label-accent {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+  font-weight: 700;
+  display: block;
+}
+
+/* User Context Card */
+.user-context-card {
+  margin: 16px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.user-context-card .context-row {
+  margin-bottom: 8px;
+}
+
+.user-context-card .context-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+
+.user-context-card .context-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* Main Cards & Containers */
+.card-outline {
+  border: 1.5px solid var(--ink);
+  padding: 24px;
+  background: #ffffff;
+}
+
+.giant-num {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.alert-box {
+  background: var(--ink);
+  color: #ffffff;
+  padding: 18px 22px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+/* Detail Sidebar & Pass Card */
+.detail-sidebar {
+  background: #ffffff;
+  border-left: 1.5px solid var(--ink);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.pass-card {
+  border: 2px solid var(--ink);
+  padding: 18px;
+  background: #ffffff;
+}
+
+.pass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.pass-avatar {
+  width: 42px;
+  height: 42px;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.pass-barcode {
+  height: 28px;
+  width: 100%;
+  background: repeating-linear-gradient(90deg, #000, #000 1px, transparent 1px, transparent 4px);
+}
+
+.barcode-lines {
+  height: 24px;
+  width: 110px;
+  background: repeating-linear-gradient(90deg, var(--ink), var(--ink) 1px, transparent 1px, transparent 4px);
+}
+
+.barcode-lines-accent {
+  height: 24px;
+  width: 110px;
+  background: repeating-linear-gradient(90deg, var(--ink), var(--ink) 1.5px, transparent 1.5px, transparent 3px);
+}
+
+/* Buttons */
+.btn-black {
+  background: var(--ink);
+  color: #ffffff;
+  border: 1.5px solid var(--ink);
+  padding: 12px 18px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  width: 100%;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-black:hover {
+  background: #2a2a2a;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  width: 100%;
+  color: var(--ink);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-outline:hover {
+  background: var(--ink-faint);
+  color: var(--ink);
+}
+
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 7px 16px;
+  background: var(--ink);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  border: 1.5px solid var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-pill:hover {
+  background: #2a2a2a;
+}
+
+.btn-pill.accent {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
+}
+
+.btn-pill.accent:hover {
+  background: #333333;
+}
+
+.btn-pill.alt {
+  background: #ffffff;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+}
+
+.btn-pill.alt:hover {
+  background: var(--ink-faint);
+}
+
+.btn-pill.warning {
+  background: var(--warning-bg);
+  border: 1.5px solid var(--warning);
+  color: var(--warning);
+}
+
+.btn-pill.warning:hover {
+  background: var(--warning);
+  color: #ffffff;
+}
+
+.footer-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1.5px solid var(--ink);
+}
+
+.warning-text {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--warning);
+  padding: 14px 18px;
+  border: 1.5px solid var(--warning);
+  background: var(--warning-bg);
+  letter-spacing: 0.02em;
+}
+
+.badge-alt {
+  background: var(--ink);
+  color: #ffffff;
+  padding: 2px 7px;
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  display: inline-block;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-faint {
+  background: #ffffff;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 2px 7px;
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  display: inline-block;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink-dim);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink);
+}
